@@ -146,7 +146,7 @@ def game():
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 sys.exit()
-
+                
             if event.type == pg.MOUSEMOTION:
                 pg.draw.rect(screen, BLACK, (0,0, width, SQUARESIZE))
                 posx = event.pos[0]
@@ -186,15 +186,37 @@ def game():
                             label = myfont.render(Player2.upper() + " WINS!!", 1, YELLOW)
                             screen.blit(label, (40,10))
                             game_over = True
-
+                            
                 print_board(board)
                 draw_board(board)
 
                 turn += 1
                 turn = turn % 2
-
+                
                 if game_over:
+                    
                     pg.time.wait(3000)
+                    celebration()
+
+def celebration():
+    global HEIGHT
+    global WIDTH
+    pg.init()
+    
+    screen = pg.display.set_mode((700,500), 0, 32)
+
+    dogeImg = pg.image.load('dogecoin.png')
+    dogex = 150
+    dogey = 200
+    direction = 'right'
+    
+    screen.blit(dogeImg, (dogex, dogey))
+    running = True 
+    while running:
+        pg.display.flip()
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                running = False
 
 
 
