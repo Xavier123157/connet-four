@@ -13,47 +13,57 @@ HEIGHT = 20
 WIDTH = 20
 
 
+
     
 def textbox():   
-    def main():
-        screen = pg.display.set_mode((700, 500))
-        font = pg.font.Font(None, 32)
-        clock = pg.time.Clock()
-        input_box = pg.Rect(0, 100, 300, 100)
-        color_inactive = pg.Color('lightskyblue3')
-        color = color_inactive
-        active = False
-        text = "Tutorial" \
-               "the aim of this stratergy game is to line four of your game pieces either horizontally, vertically or diagonally" \
-                
+    pg.init()
+
+
+    SIZE = WIDTH, HEIGHT = (1000, 600)
+    FPS = 30
+    screen = pg.display.set_mode(SIZE, pg.RESIZABLE)
+    clock = pg.time.Clock()
+
+
+    def blit_text(surface, text, pos, font, color=pg.Color('green')):
+        words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+        space = font.size(' ')[0]  # The width of a space.
+        max_width, max_height = surface.get_size()
+        x, y = pos
+        for line in words:
+            for word in line:
+                word_surface = font.render(word, 0, color)
+                word_width, word_height = word_surface.get_size()
+                if x + word_width >= max_width:
+                    x = pos[0]  # Reset the x.
+                    y += word_height  # Start on new row.
+                surface.blit(word_surface, (x, y))
+                x += word_width + space
+            x = pos[0]  # Reset the x.
+            y += word_height  # Start on new row.
+
+
+    text = "So you cant play connect four?\nWhat sort of childhood did you have?\nAnyway, heres how;\n-The aim of the game is to line up four of your circles in a row, column or diagonal\n" \
+        "-Taking turns with the other player, you must select a column in which to place your piece (it will drop the the bottom available space in the selected column)\n" \
+        "-The game continues this way until a winner has been crowned as the connect four champion. Or until the board has been completely filled, in which case you both have shown a complete lack of brian power\n" \
+        "-Dont forget to be strategic and bamboozle your opponent\nHappy connect four-ing\n(close this window to begin)"
         
-        done = False
-        while not done:
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    done = True
+    font = pg.font.SysFont('Arial', 35)
+
+    while True:
+
+        dt = clock.tick(FPS) / 1000
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                game()
+                quit()
                 
 
-            screen.fill(('black'))
+        screen.fill(pg.Color('black'))
+        blit_text(screen, text, (20, 20), font)
+        pg.display.update()
         
-            txt_surface = font.render(text, True, color)
-            
-            width = max(200, txt_surface.get_width()+10)
-            input_box.w = width
-            
-    
-            screen.blit(txt_surface, (input_box.x+10, input_box.y+10))
-            
-            pg.draw.rect(screen, color, input_box, 2)
-
-            pg.display.flip()
-            clock.tick(30)
-
-    if __name__ == '__main__':
-        pg.init()
-        main()
-        pg.quit()
-        game()
 
 def game():
     def create_board():
@@ -208,3 +218,4 @@ if tutorial == "b":
     game()
 if tutorial == "a":
     textbox()
+    
