@@ -2,7 +2,7 @@ import numpy as np
 import pygame as pg
 import sys
 import math
-
+from pygame import mixer
 BLACK = (0,0,0)
 RED = pg.Color("blue")
 YELLOW = pg.Color("green")
@@ -43,9 +43,9 @@ def textbox():
             y += word_height  # Start on new row.
 
 
-    text = "So you cant play connect four?\nWhat sort of childhood did you have?\nAnyway, heres how;\n-The aim of the game is to line up four of your circles in a row, column or diagonal\n" \
+    text = "So you can't play connect four?\nWhat sort of childhood did you have?\nAnyway, here's how;\n-The aim of the game is to line up four of your circles in a row, column or diagonal\n" \
         "-Taking turns with the other player, you must select a column in which to place your piece (it will drop the the bottom available space in the selected column)\n" \
-        "-The game continues this way until a winner has been crowned as the connect four champion. Or until the board has been completely filled, in which case you both have shown a complete lack of brian power\n" \
+        "-The game continues this way until a winner has been crowned as the connect four champion, or until the board has been completely filled, in which case you both have shown a complete lack of brain power\n" \
         "-Dont forget to be strategic and bamboozle your opponent\nHappy connect four-ing\n(close this window to begin)"
         
     font = pg.font.SysFont('Arial', 35)
@@ -149,7 +149,7 @@ def game():
 
     pg.display.update()
 
-    myfont = pg.font.SysFont("monospace", 75)
+    myfont = pg.font.SysFont("monospace", 50)
 
     while not game_over:
         
@@ -179,7 +179,7 @@ def game():
 
                         if winning_move(board, 1):
                             label = myfont.render(Player1.upper() + " WINS!!", 1, RED)
-                            screen.blit(label, (40,10))
+                            screen.blit(label, (20,10))
                             game_over = True
 
 
@@ -194,7 +194,7 @@ def game():
 
                         if winning_move(board, 2):
                             label = myfont.render(Player2.upper() + " WINS!!", 1, YELLOW)
-                            screen.blit(label, (40,10))
+                            screen.blit(label, (20,10))
                             game_over = True
                             
                 print_board(board)
@@ -211,16 +211,22 @@ def game():
 def celebration():
     global HEIGHT
     global WIDTH
-    pg.init()
-    
-    screen = pg.display.set_mode((700,500), 0, 32)
 
+    pg.init()
+    mixer.init()
+    screen = pg.display.set_mode((220,200), 0, 32)
+    
     dogeImg = pg.image.load('dogecoin.png')
-    dogex = 150
-    dogey = 200
+    dogex = -40
+    dogey = 0
     direction = 'right'
     
     screen.blit(dogeImg, (dogex, dogey))
+    
+
+    mixer.music.load("bark.mp3")
+    mixer.music.set_volume(1)
+    mixer.music.play()
     running = True 
     while running:
         pg.display.flip()
